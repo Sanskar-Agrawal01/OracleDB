@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Employee Management System
 
 A full-stack CRUD application for managing employee details using React, Express, and Oracle Database.
@@ -152,3 +153,6 @@ dbproject/
 
 MIT
 
+=======
+# OracleDB
+>>>>>>> efae072ff869acf941fc43290904adb238253a56
