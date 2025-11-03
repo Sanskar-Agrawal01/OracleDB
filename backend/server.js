@@ -1,22 +1,30 @@
+// server.js
 const express = require('express');
-const cors = require('cors');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { initializeDatabase } = require('./config/database');
-const employeeRoutes = require('./routes/employeeRoutes');
+require('dotenv').config();
 
 const app = express();
-const PORT = 3001;
-
 app.use(cors());
 app.use(bodyParser.json());
 
-// Routes
+const authRoutes = require('./routes/auth');
+const employeeRoutes = require('./routes/employees');
+
+app.use('/api/auth', authRoutes);
 app.use('/api/employees', employeeRoutes);
 
-// Initialize DB and start server
-(async () => {
-  await initializeDatabase();
-  app.listen(PORT, () =>
-    console.log(`🚀 Server running on http://localhost:${PORT}`)
-  );
-})();
+const PORT = process.env.PORT || 4000;
+
+initializeDatabase()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+      console.log('Endpoints: POST /api/auth/register, POST /api/auth/login, /api/employees');
+    });
+  })
+  .catch(err => {
+    console.error('Failed to initialize DB. Server will not start.', err);
+    process.exit(1);
+  });
